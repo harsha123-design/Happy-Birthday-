@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Manasa ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: black;
+  color: white;
+  overflow: hidden;
+}
+
+.screen {
+  display: none;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+.active { display: flex; }
+
+.card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(15px);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 0 40px rgba(255,77,109,0.3);
+}
+
+button {
+  padding: 12px 25px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(45deg,#ff4d6d,#ff758c);
+  color: white;
+}
+
+.glow {
+  font-size: 42px;
+  text-shadow: 0 0 10px #ff4d6d,0 0 30px #ff4d6d;
+  animation: glow 2s infinite alternate;
+}
+@keyframes glow {
+  to { text-shadow: 0 0 40px #ff4d6d; }
+}
+
+#count { font-size: 70px; }
+
+#msg p {
+  opacity: 0;
+  transition: 1.5s;
+  margin: 10px 0;
+}
+
+img {
+  width: 240px;
+  border-radius: 15px;
+  transition: opacity 1s;
+}
+
+.heart {
+  position: absolute;
+  animation: float 5s linear infinite;
+}
+@keyframes float {
+  from {transform:translateY(100vh);}
+  to {transform:translateY(-10vh);}
+}
+
+.firework {
+  position:absolute;
+  width:5px;height:5px;
+  border-radius:50%;
+  animation:explode 1s forwards;
+}
+@keyframes explode {
+  to {transform:translate(var(--x),var(--y));opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+  <source src="music.mp3">
+</audio>
+
+<!-- Intro -->
+<div id="intro" class="screen active">
+  <div class="card">
+    <h2>🎂 Happy Birthday</h2>
+    <h1 class="glow">Manasa ✨</h1>
+  </div>
+</div>
+
+<!-- Screen 1 -->
+<div id="s1" class="screen">
+  <div class="card">
+    <h2>నా చిన్న సర్ప్రైజ్ 🎁</h2>
+    <button onclick="start()">ప్రారంభించు</button>
+  </div>
+</div>
+
+<!-- Countdown -->
+<div id="s2" class="screen">
+  <div class="card">
+    <div id="count">3</div>
+  </div>
+</div>
+
+<!-- Message -->
+<div id="s3" class="screen">
+  <div class="card">
+    <h2>హ్యాపీ బర్త్‌డే 🎂</h2>
+    <h1 class="glow">మనసా ❤️</h1>
+    <div id="msg"></div>
+  </div>
+</div>
+
+<!-- Photos -->
+<div id="s4" class="screen">
+  <div class="card">
+    <img id="photo" src="photo1.jpg">
+  </div>
+</div>
+
+<!-- Final -->
+<div id="s5" class="screen">
+  <div class="card">
+    <h1>🎉 HAPPY BIRTHDAY 🎉</h1>
+    <p>నిన్ను నా కూతురిగా పిలవడం నాకు గర్వంగా ఉంది ❤️</p>
+    <p>ఎప్పుడూ ఇలానే ఎదుగుతూ ఉండాలి నా మనసా 🌟</p>
+    <p>– ప్రేమతో, నాన్న ❤️</p>
+  </div>
+</div>
+
+<script>
+
+/* Intro */
+setTimeout(()=>next("s1"),3000);
+
+/* Navigation */
+function next(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+
+  if(id==="s4"){
+    startSlideshow();
+    setTimeout(()=>next("s5"),18000);
+  }
+
+  if(id==="s5") fireworks();
+}
+
+/* START (Music from 10 sec) */
+function start(){
+  let m=document.getElementById("music");
+
+  m.play().then(()=>{
+    m.currentTime = 10; // ✅ START FROM 10 SEC
+  });
+
+  next("s2");
+
+  let n=3;
+  let int=setInterval(()=>{
+    count.innerText=--n;
+    if(n===0){
+      clearInterval(int);
+      next("s3");
+
+      setTimeout(showLinesSync,500);
+      hearts();
+    }
+  },1000);
+}
+
+/* Proud Father Message */
+let lines=[
+  "నా ప్రియమైన మనసా...",
+  "నువ్వు నా జీవితంలో వచ్చిన అతి పెద్ద ఆనందం ❤️",
+  "నువ్వు చేసే ప్రతి పని నాకు గర్వంగా ఉంటుంది 💪",
+  "నిన్ను చూస్తే నా తల ఎత్తుకుని నిలబడతాను 🌟",
+  "నీ విజయాలు ఇంకా ఎత్తుకు చేరాలని కోరుకుంటున్నాను 🚀",
+  "ఎప్పుడూ ధైర్యంగా ముందుకు సాగాలి నా కూతురా ❤️"
+];
+
+function showLinesSync(){
+  let delays=[0,4000,8000,12000,16000,20000];
+
+  lines.forEach((line,i)=>{
+    setTimeout(()=>{
+      let p=document.createElement("p");
+      p.innerHTML=line;
+      msg.appendChild(p);
+      setTimeout(()=>p.style.opacity=1,100);
+    },delays[i]);
+  });
+
+  setTimeout(()=>next("s4"),24000);
+}
+
+/* Photos */
+let arr=[
+  "photo1.jpg",
+  "photo2.jpg",
+  "photo3.jpg",
+  "photo4.jpg",
+  "photo5.jpg",
+  "photo6.jpg"
+];
+
+let p=0;
+
+function startSlideshow(){
+  setInterval(()=>{
+    if(!s4.classList.contains("active")) return;
+
+    photo.style.opacity=0;
+
+    setTimeout(()=>{
+      p=(p+1)%arr.length;
+      photo.src=arr[p];
+      photo.style.opacity=1;
+    },500);
+
+  },3000);
+}
+
+/* Hearts */
+function hearts(){
+  setInterval(()=>{
+    let h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤️";
+    h.style.left=Math.random()*100+"vw";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),5000);
+  },400);
+}
+
+/* Fireworks */
+function fireworks(){
+  for(let i=0;i<5;i++){
+    setTimeout(()=>{
+      let x=Math.random()*innerWidth;
+      let y=Math.random()*innerHeight/2;
+      for(let j=0;j<40;j++){
+        let f=document.createElement("div");
+        f.className="firework";
+        let a=Math.random()*2*Math.PI;
+        let d=Math.random()*120;
+        f.style.setProperty("--x",Math.cos(a)*d+"px");
+        f.style.setProperty("--y",Math.sin(a)*d+"px");
+        f.style.left=x+"px";
+        f.style.top=y+"px";
+        f.style.background="hsl("+Math.random()*360+",100%,50%)";
+        document.body.appendChild(f);
+        setTimeout(()=>f.remove(),1000);
+      }
+    },i*400);
+  }
+}
+
+</script>
+
+</body>
+</html>
